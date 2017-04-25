@@ -5,8 +5,8 @@ const utilSchemas = require('./utilSchemas')
 const UserSchema = new mongoose.Schema({
     login: 
     [{
-       userName: {type: String, unique: true,required: [true, 'You need put your username']},
-       password:{type: String,required: [true, 'You need put your password']},  
+       userName: {type: String, unique: true, required: [true, 'You need put your username']},
+       password:{type: String, required: [true, 'You need put your password']},  
     }],
 
     roles: {
@@ -19,13 +19,12 @@ const UserSchema = new mongoose.Schema({
     },
     createdAt: {type: Date, default: Date.now},
     updatedAt: {type: Date},
-   addresses: {
-        type:[utilSchemas.addresses],
-        required: [true, "You must enter the address!"]},
-
-    contacts: {
-        type: [utilSchemas.contacts],
-        required: [true, "The contact information of the client must be entered!"]}},
+    generalData:{ 
+        type: [utilSchemas.generalData],
+        required: [true, 'You need put your address and your contact information']
+    }
+    
+},
     {
     versionKey: false
 })
