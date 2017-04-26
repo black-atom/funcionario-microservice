@@ -40,3 +40,19 @@ exports.registerUser = (req, res, next) => {
         next(error);
     })
 }
+
+exports.signIn = (req, res, next) => {
+    const username = req.body.login.username;
+    const password = req.body.login.password;
+
+    user.findOne({"login.username": username, "login.password": password}).then(madeLogin => {
+        if(madeLogin) {
+           res.status(200).json(madeLogin);
+        } else {
+            res.send('Username or password incorrect')
+        }
+       
+    }).catch(error => {
+        next(error);
+    })
+}
