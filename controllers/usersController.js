@@ -21,3 +21,22 @@ exports.getOneUser = (req, res, next) => {
         next(error);
     })
 }
+
+exports.registerUser = (req, res, next) => {
+    const newUser = new user;
+    newUser.login = req.body.login;
+    newUser.badgeID = req.body.badgeID;
+    newUser.address = req.body.address;
+    newUser.contact = req.body.contact;
+    if(req.body.roles && req.body.roles.length > 0){
+        newUser.roles = req.body.roles;
+    }
+    newUser.save().then(createdUser => {
+        res.status(200)
+        .json(createdUser);
+
+    }).catch(error => {
+        console.log(error);
+        next(error);
+    })
+}
