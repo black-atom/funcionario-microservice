@@ -1,7 +1,5 @@
 const mongoose = require('mongoose');
-const generalData  = mongoose.Schema({
-    email: {type: String, required: [true, "You need put your email adress!"]},
-    tel: {type: Number, required: [true, "You need put your telephone number!"]},
+const address  = mongoose.Schema({
     street: {type: String, required: [true, "You need put your street!"]},
     number: {type: Number, required: [true, "You need put your number!"]},
     state: {type: String, required: [true, "You need put your state!"]},
@@ -9,6 +7,12 @@ const generalData  = mongoose.Schema({
     cep: {type: Number, required: [true, "You need put your CEP!"]},
 })
 
+const contact  = mongoose.Schema({
+    email: {type: String, required: [true, "You need put your email adress!"]},
+    tel: {type: Number, required: [true, "You need put your telephone number!"]},
+})
+
 module.exports = {
-    generalData : generalData
+    address : address,
+    contact: contact
 }
