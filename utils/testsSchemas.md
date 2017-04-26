@@ -1,18 +1,20 @@
-const development = {
-    login: {
-        username: 'Rafael Dev',
-        password: '123456'
+// Schema to use in postman tests
+{
+    "login": {
+        "username": "Rafael Dev",
+        "password": "123456"
     },
-    address: {
-        street: "Rua Dr Cincinato Braga",
-        number: 296,
-        state: "São Paulo",
-        city: "São Bernardo do Campo",
-        cep: 12355,
+    "badgeID": "123456",
+    "address": {
+        "street": "Rua Dr Cincinato Braga",
+        "number": 296,
+        "state": "São Paulo",
+        "city": "São Bernardo do Campo",
+        "cep": 12355
     },
-    contact: {
-        email: 'rafa',
-        tel: 1234567
+    "contact": {
+        "email": "rafa",
+        "tel": 1234567
     },
-    roles: ['Adminstrador']
+    "roles": ["Adminstrador"]
 }
