@@ -1,11 +1,18 @@
 const mongoose = require('mongoose');
 const _db = require('./_db');
 const utilSchemas = require('./utilSchemas')
+const bcrypt = require('bcrypt-node');
+const salt = bcrypt.genSaltSync(10);
 
 const UserSchema = new mongoose.Schema({
     login: {
-       username: {type: String, required: [true, 'You need put your username']},
-       password:{type: String, required: [true, 'You need put your password']},  
+       username: {
+           type: String, 
+           required: [true, 'You need put your username']},
+       password:{
+           type: String, 
+           required: [true, 'You need put your password'], 
+           set: (v) => {return bcrypt.hashSync(v, salt)}},  
     },
     badgeID: {
         type: String,

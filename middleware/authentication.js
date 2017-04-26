@@ -1,4 +1,4 @@
-exports.compare = (req, res, next) => {
+exports.authVerification = (req, res, next) => {
     const token = req.get('x-access-token') || req.get('token');
     console.log(token);
     if(token){
