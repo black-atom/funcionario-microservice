@@ -1,4 +1,7 @@
 const user = require ('./../models/user');
+const bcrypt = require('bcrypt-node');
+const salt = bcrypt.genSaltSync(10);
+
 
 exports.getAllUsers = (req, res, next) => {
     user.find().then(foundUsers => {
@@ -42,17 +45,24 @@ exports.registerUser = (req, res, next) => {
 }
 
 exports.signIn = (req, res, next) => {
-    const username = req.body.login.username;
-    const password = req.body.login.password;
+    const username = req.body.username;
+    const password = req.body.password;
 
-    user.findOne({"login.username": username, "login.password": password}).then(madeLogin => {
-        if(madeLogin) {
-           res.status(200).json(madeLogin);
-        } else {
-            res.send('Username or password incorrect')
-        }
-       
-    }).catch(error => {
-        next(error);
-    })
-}
+    user.findOne({'login.username': username}).then(connected => {
+        const hash = bcrypt.hashSync(connected.login.password, salt);
+
+        bcrypt.compare(password, hash, (isMatch) => {
+            if(isMatch)
+            {
+                res.status(200).json(connected);
+            }
+            else 
+            {
+                res.status(403).json('User or password do not match');
+            }});
+
+        }).catch(error => { 
+            console.log(error);
+            next(error);
+    });
+};

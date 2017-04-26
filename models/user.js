@@ -12,7 +12,7 @@ const UserSchema = new mongoose.Schema({
        password:{
            type: String, 
            required: [true, 'You need put your password'], 
-           set: (v) => {return bcrypt.hashSync(v, salt)}},  
+           set: (v) => bcrypt.hashSync(v, salt)},  
     },
     badgeID: {
         type: String,
