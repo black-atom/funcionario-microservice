@@ -49,17 +49,17 @@ exports.signIn = (req, res, next) => {
     const password = req.body.password;
 
     user.findOne({'login.username': username}).then(connected => {
-        const hash = bcrypt.hashSync(connected.login.password, salt);
-
-        bcrypt.compare(password, hash, (isMatch) => {
-            if(isMatch)
+        
+        bcrypt.compare(password, connected.login.password, (erro, isMatch)=>{
+           if(isMatch)
             {
                 res.status(200).json(connected);
             }
             else 
             {
                 res.status(403).json('User or password do not match');
-            }});
+            }
+        })
 
         }).catch(error => { 
             console.log(error);
