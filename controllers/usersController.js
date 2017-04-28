@@ -74,13 +74,22 @@ exports.deleteUser = (req, res, next) => {
 
 exports.updateUser = (req, res, next) => {
     user.findOne({_id: req.params.id}).then(foundUser => {
-        console.log(foundUser);
-
-        Object.assign(foundUser, req.body).save().then(updatedUser => {
-                console.log(updatedUser);
-                  res.status(200).json({message: 'The user was updated', updatedUser});
-
-        });
+        if(req.body.login){
+            foundUser.login.username = req.body.login.username || foundUser.login.username;
+            if( req.body.login.password && req.body.login.password.length > 0 ){
+                foundUser.login.password = req.body.login.password;
+            }
+        }
+        foundUser.badgeID        = req.body.badgeID        || foundUser.badgeID;
+        foundUser.address        = req.body.address        || foundUser.address;
+        foundUser.contact        = req.body.contact        || foundUser.contact;
+        foundUser.roles          = req.body.roles          || foundUser.roles;
+        return foundUser.save();
+    })
+    .then(savedUser => {
+        res.status(200).json(savedUser);
+    })
+    .catch(erro => {
+        next(erro);
     });
 };
-   
