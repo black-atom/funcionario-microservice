@@ -5,5 +5,7 @@ router.get('/api/users', usersController.getAllUsers);
 router.get('/api/users/:id', usersController.getOneUser);
 router.post('/api/users', usersController.registerUser);
 router.post('/login', usersController.signIn);
+router.delete('/api/users/:id', usersController.deleteUser);
+router.put('/api/users/:id', usersController.updateUser);
 
 module.exports = router;
