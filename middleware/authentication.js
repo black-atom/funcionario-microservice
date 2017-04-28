@@ -4,6 +4,6 @@ exports.authVerification = (req, res, next) => {
     if(token){
         next();
     } else {
-        res.status(403).json({message: 'Coloca o Token seu merda!'})
+        res.status(403).json({message: 'You need a token  authentication'})
     }
 }
