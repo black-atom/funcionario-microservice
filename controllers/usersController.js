@@ -39,7 +39,6 @@ exports.registerUser = (req, res, next) => {
         .json(createdUser);
 
     }).catch(error => {
-        console.log(error);
         next(error);
     })
 }
@@ -49,20 +48,39 @@ exports.signIn = (req, res, next) => {
     const password = req.body.password;
 
     user.findOne({'login.username': username}).then(connected => {
-        
-        bcrypt.compare(password, connected.login.password, (erro, isMatch)=>{
-           if(isMatch)
-            {
+        bcrypt.compare(password, connected.login.password, (err, isMatch)=>{
+            if(isMatch){
                 res.status(200).json(connected);
             }
-            else 
-            {
+            else{
                 res.status(403).json('User or password do not match');
-            }
-        })
+            }});
 
         }).catch(error => { 
-            console.log(error);
             next(error);
     });
 };
+
+exports.deleteUser = (req, res, next) => {
+    user.remove({_id: req.params.id}).then(deletedUser => {
+        
+        res.status(200)
+        .json({message: 'User was removed!', deletedUser});
+
+    }).catch(error => {
+        next(error);
+    });
+};
+
+exports.updateUser = (req, res, next) => {
+    user.findOne({_id: req.params.id}).then(foundUser => {
+        console.log(foundUser);
+
+        Object.assign(foundUser, req.body).save().then(updatedUser => {
+                console.log(updatedUser);
+                  res.status(200).json({message: 'The user was updated', updatedUser});
+
+        });
+    });
+};
+   
