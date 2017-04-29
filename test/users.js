@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const user = require('./../models/user');
 const authentication = require('./../middleware/authentication');
+const bcrypt = require('bcrypt-node');
 
 //Require the dev-dependencies
 const chai = require('chai');
@@ -15,7 +16,7 @@ const userSchemaTest = {
         username: "Rafael Dev",
         password: "r341p0nt0"
     },
-    badgeID: 123456,
+    badgeID: '123456',
     address: {
         street: "Rua Dr Cincinato Braga",
         number: 296,
@@ -35,7 +36,7 @@ const userSchemaTestUpdated = {
         username: "Alexandre Dev",
         password: "x1ba026404"
     },
-    badgeID: 2121,
+    badgeID: '123456',
     address: {
         street: "Rua São Pedro Brasil",
         number: 51,
@@ -49,6 +50,7 @@ const userSchemaTestUpdated = {
     },
     roles: ["Supervisor"]
 }
+
 
 
 describe('users', () => {
@@ -84,7 +86,14 @@ describe('/GET users', () => {
            .end((err, res) => {
                res.should.have.status(200);
                res.body.should.be.a('object');
-               res.body.login.should.have.property('username').eql('Rafael Dev');
+               res.body.login.should.have.property('username').eql(userSchemaTest.login.username);
+               res.body.address.should.have.property('street').eql(userSchemaTest.address.street);
+               res.body.address.should.have.property('number').eql(userSchemaTest.address.number);
+               res.body.address.should.have.property('state').eql(userSchemaTest.address.state);
+               res.body.address.should.have.property('city').eql(userSchemaTest.address.city);
+               res.body.address.should.have.property('cep').eql(userSchemaTest.address.cep);
+               res.body.contact.should.have.property('email').eql(userSchemaTest.contact.email);
+               res.body.contact.should.have.property('tel').eql(userSchemaTest.contact.tel);
                res.body.should.have.property('_id').eql(oneuser.id);
              done();
             });
@@ -102,17 +111,16 @@ describe('/GET users', () => {
           .end((err, res) => {
             res.should.have.status(200);
             res.body.should.be.a('object');
-            res.body.login.should.have.property('username').eql('Rafael Dev');
-            res.body.login.should.have.property('password');
-            res.body.should.have.property('badgeID').eql('123456');
-            res.body.address.should.have.property('street').eql('Rua Dr Cincinato Braga');
-            res.body.address.should.have.property('number').eql(296);
-            res.body.address.should.have.property('state').eql('São Paulo');
-            res.body.address.should.have.property('city').eql('São Bernardo do Campo');
-            res.body.address.should.have.property('cep').eql(12355);
-            res.body.contact.should.have.property('email').eql('rafa');
-            res.body.contact.should.have.property('tel').eql(1234567);
-            res.body.should.have.property('roles').eql(['Adminstrador']);
+            res.body.login.should.have.property('username').eql(userSchemaTest.login.username);
+            res.body.should.have.property('badgeID').eql(userSchemaTest.badgeID);
+            res.body.address.should.have.property('street').eql(userSchemaTest.address.street);
+            res.body.address.should.have.property('number').eql(userSchemaTest.address.number);
+            res.body.address.should.have.property('state').eql(userSchemaTest.address.state);
+            res.body.address.should.have.property('city').eql(userSchemaTest.address.city);
+            res.body.address.should.have.property('cep').eql(userSchemaTest.address.cep);
+            res.body.contact.should.have.property('email').eql(userSchemaTest.contact.email);
+            res.body.contact.should.have.property('tel').eql(userSchemaTest.contact.tel);
+            res.body.should.have.property('roles').eql(userSchemaTest.roles);
             done();
         });
       });
@@ -151,19 +159,21 @@ describe('/GET users', () => {
                 .end((err, res) => {
                     res.should.have.status(200);
                     res.body.should.be.a('object');
-                    res.body.should.have.property('message').eql('The user was updated');
-                    res.body.updatedUser.should.have.property('badgeID');
-                    res.body.updatedUser.login.should.have.property('username').eql('Alexandre Dev');
-                    res.body.updatedUser.login.should.have.property('password');
-                    res.body.updatedUser.contact.should.have.property('email').eql('alexandre@alexandre.com.br');
-                    res.body.updatedUser.contact.should.have.property('tel').eql(982452477);
-                    res.body.updatedUser.should.have.property('roles').eql(['Supervisor']);
-                    res.body.updatedUser.address.should.have.property('street').eql('Rua São Pedro Brasil');
-                    res.body.updatedUser.address.should.have.property('number').eql(51);
-                    res.body.updatedUser.address.should.have.property('state').eql('Pindamonhagaba');
-                    res.body.updatedUser.address.should.have.property('city').eql('SBC');
-                    res.body.updatedUser.address.should.have.property('cep').eql(09825187);
-                  done();
+                    res.body.should.have.property('login');
+                    res.body.login.should.have.property('username').eql(userSchemaTestUpdated.login.username);
+                    res.body.should.have.property('badgeID').eql(userSchemaTestUpdated.badgeID);
+                    res.body.address.should.have.property('street').eql(userSchemaTestUpdated.address.street);
+                    res.body.address.should.have.property('number').eql(userSchemaTestUpdated.address.number);
+                    res.body.address.should.have.property('state').eql(userSchemaTestUpdated.address.state);
+                    res.body.address.should.have.property('city').eql(userSchemaTestUpdated.address.city);
+                    res.body.address.should.have.property('cep').eql(userSchemaTestUpdated.address.cep);
+                    res.body.contact.should.have.property('email').eql(userSchemaTestUpdated.contact.email);
+                    res.body.contact.should.have.property('tel').eql(userSchemaTestUpdated.contact.tel);
+                    res.body.should.have.property('roles').eql(userSchemaTestUpdated.roles);
+                    bcrypt.compare(userSchemaTestUpdated.login.password, res.body.login.password, (err , isMatch)=>{
+                        isMatch.should.be.eql(true);
+                        done();
+                    });
                 });
           });
       });
