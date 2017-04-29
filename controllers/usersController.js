@@ -43,23 +43,6 @@ exports.registerUser = (req, res, next) => {
     })
 }
 
-exports.signIn = (req, res, next) => {
-    const username = req.body.username;
-    const password = req.body.password;
-
-    user.findOne({'login.username': username}).then(connected => {
-        bcrypt.compare(password, connected.login.password, (err, isMatch)=>{
-            if(isMatch){
-                res.status(200).json(connected);
-            }
-            else{
-                res.status(403).json('User or password do not match');
-            }});
-
-        }).catch(error => { 
-            next(error);
-    });
-};
 
 exports.deleteUser = (req, res, next) => {
     user.remove({_id: req.params.id}).then(deletedUser => {
@@ -80,10 +63,10 @@ exports.updateUser = (req, res, next) => {
                 foundUser.login.password = req.body.login.password;
             }
         }
-        foundUser.badgeID        = req.body.badgeID        || foundUser.badgeID;
-        foundUser.address        = req.body.address        || foundUser.address;
-        foundUser.contact        = req.body.contact        || foundUser.contact;
-        foundUser.roles          = req.body.roles          || foundUser.roles;
+        foundUser.badgeID = req.body.badgeID || foundUser.badgeID;
+        foundUser.address = req.body.address || foundUser.address;
+        foundUser.contact = req.body.contact || foundUser.contact;
+        foundUser.roles   = req.body.roles   || foundUser.roles;
         return foundUser.save();
     })
     .then(savedUser => {
