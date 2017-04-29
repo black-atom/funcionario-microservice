@@ -6,9 +6,11 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const utils = require('./utils/utils');
 const authenticationMiddleware = require('./middleware/authentication');
+const jwt = require('jsonwebtoken');
 
 // import controllers here
 const usersRoute = require('./routes/usersRoute');
+const authenticationRoute = require('./routes/authenticationRoute');
 const app = express();
 
 // view engine setup
@@ -28,6 +30,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 //import routers here
 app.use('/', usersRoute);
+app.use('/', authenticationRoute);
 
 
 // catch 404 and forward to error handler
