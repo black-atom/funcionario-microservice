@@ -62,6 +62,13 @@ describe('users', () => {
     });
 
     before((done) => {
+        /**
+         * Estou adicionando um novo usuario porque para gerar o token,
+         * precisamos de um usuario valido
+         */
+        let Users = new user(userSchemaTest);
+        Users.save().then(savedUsed => {
+
             chai.request(server)
             .post('/login')
             .send({
@@ -73,7 +80,11 @@ describe('users', () => {
                 done();
             }).catch(error => {
                 done(error);
-            });
+            })
+
+        }).catch(erro =>{
+            done(erro);
+        })
     });
   
 
