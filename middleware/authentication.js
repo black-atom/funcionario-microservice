@@ -8,12 +8,12 @@ exports.authVerification = (req, res, next) => {
     const token = req.get('x-access-token') || req.get('token');
     jwt.verify(token, config.SECRET).then(tokenVerified => {
 
-        res.status(200)
-        .json(tokenVerified);
+        req.decoded = tokenVerified;
+        next();
 
     }).catch(error =>{
-        next(error);
-    })
+        res.status(403).json(error);
+    });
 };
 
 exports.signIn = (req, res, next) => {
@@ -21,6 +21,7 @@ exports.signIn = (req, res, next) => {
     const password = req.body.password;
 
     user.findOne({'login.username': username}).then(connected => {
+        console.log(connected);
             if(connected){
                 bcrypt.compare(password, connected.login.password, (err, isMatch)=>{
   
@@ -29,9 +30,10 @@ exports.signIn = (req, res, next) => {
                             username: connected.login.username,
                             password: connected.login.password
                         };
-                        jwt.sign(login, config.SECRET, {expiresIn: 60*60*12}).then(validation => {
-                             res.status(200).json({login, validation}); 
-                        })
+                        jwt.sign(login, config.SECRET, {expiresIn: 60*60*12}).then(validated =>{
+                          res.status(200).json({login, validated}); 
+                    })
+                      
                     }
                     else{
                         res.status(403).json('User or password do not match');
