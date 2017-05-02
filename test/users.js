@@ -52,19 +52,33 @@ const userSchemaTestUpdated = {
 }
 
 
+let token;
 
 describe('users', () => {
     beforeEach((done) => { 
         user.remove({}, (err) => {
            done();
         });
+        before((done) => {
+            chai.request(server)
+            .post('/login')
+            .send({username: userSchemaTest.login.username,
+                   password: userSchemaTest.login.password
+            }).then(res => {
+                    token = res.body.token; 
+                         console.log(token);
+                    }).catch(error => {
+                        done(error);
+                  });
+            });
     });
+  
 
 describe('/GET users', () => {
         it('it should GET all the users', (done) => {
             chai.request(server)
             .get('/api/users')
-            .set('x-access-token', 'token')
+            .set('x-access-token', token)
             .end((err, res) => {
                 res.should.have.status(200);
                 res.body.should.be.a('array');
@@ -81,7 +95,7 @@ describe('/GET users', () => {
          Users.save((err, oneuser) => {
            chai.request(server)
            .get('/api/users/' + oneuser.id)
-           .set('x-access-token', 'token')
+           .set('x-access-token', token)
            .send(oneuser)
            .end((err, res) => {
                res.should.have.status(200);
@@ -106,7 +120,7 @@ describe('/GET users', () => {
         let Users = new user(userSchemaTest)
           chai.request(server)
           .post('/api/users')
-          .set('x-access-token', 'token')
+          .set('x-access-token', token)
           .send(Users)
           .end((err, res) => {
             res.should.have.status(200);
@@ -154,7 +168,7 @@ describe('/GET users', () => {
         Users.save((err, oneuser) => {
                 chai.request(server)
                 .put('/api/users/' + oneuser.id)
-                .set('x-access-token', 'token')
+                .set('x-access-token', token)
                 .send(userSchemaTestUpdated)
                 .end((err, res) => {
                     res.should.have.status(200);
