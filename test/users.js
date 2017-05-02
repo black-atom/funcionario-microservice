@@ -59,17 +59,20 @@ describe('users', () => {
         user.remove({}, (err) => {
            done();
         });
-        before((done) => {
+    });
+
+    before((done) => {
             chai.request(server)
             .post('/login')
-            .send({username: userSchemaTest.login.username,
-                   password: userSchemaTest.login.password
-            }).then(res => {
-                    token = res.body.token; 
-                         console.log(token);
-                    }).catch(error => {
-                        done(error);
-                  });
+            .send({
+                username: userSchemaTest.login.username,
+                password: userSchemaTest.login.password
+            })
+            .then(res => {
+                token = res.body.token; 
+                done();
+            }).catch(error => {
+                done(error);
             });
     });
   
@@ -146,7 +149,7 @@ describe('/GET users', () => {
           User.save((err, oneuser) => {
             chai.request(server)
             .delete('/api/users/' + oneuser.id)
-            .set('x-access-token', 'token')
+            .set('x-access-token', token)
             .end((err, res) => {
             res.should.have.status(200);
             res.body.should.be.a('object');

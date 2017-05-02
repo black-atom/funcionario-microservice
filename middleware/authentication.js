@@ -28,11 +28,11 @@ exports.signIn = (req, res, next) => {
                     if(isMatch === true){
                         let login = {
                             username: connected.login.username,
-                            password: connected.login.password
                         };
-                        jwt.sign(login, config.SECRET, {expiresIn: 60*60*12}).then(validated =>{
-                          res.status(200).json({login, validated}); 
-                    })
+                        jwt.sign(login, config.SECRET, {expiresIn: 60*60*12}).then(generatedToken =>{
+                          login.token = generatedToken;
+                          res.status(200).json(login); 
+                        })
                       
                     }
                     else{
