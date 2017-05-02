@@ -1,18 +1,20 @@
 const user = require('./../models/user');
-const jwt = require('jsonwebtoken');
+const jwt = require('jwt-then');
 const config = require('./../utils/config');
 const bcrypt = require('bcrypt-node');
 
 
 exports.authVerification = (req, res, next) => {
     const token = req.get('x-access-token') || req.get('token');
-    console.log(token);
-    if(token){
-        next();
-    } else {
-        res.status(403).json({message: 'You need a token  authentication'})
-    }
-}
+    jwt.verify(token, config.SECRET).then(tokenVerified => {
+
+        res.status(200)
+        .json(tokenVerified);
+
+    }).catch(error =>{
+        next(error);
+    })
+};
 
 exports.signIn = (req, res, next) => {
     const username = req.body.username;
@@ -27,8 +29,9 @@ exports.signIn = (req, res, next) => {
                             username: connected.login.username,
                             password: connected.login.password
                         };
-                        login.token = jwt.sign(login, config.SECRET, {expiresIn: 60*60*12})
-                        res.status(200).json(login); 
+                        jwt.sign(login, config.SECRET, {expiresIn: 60*60*12}).then(validation => {
+                             res.status(200).json({login, validation}); 
+                        })
                     }
                     else{
                         res.status(403).json('User or password do not match');

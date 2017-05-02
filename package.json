@@ -15,6 +15,7 @@
     "debug": "~2.6.3",
     "express": "~4.15.2",
     "jsonwebtoken": "^7.4.0",
+    "jwt-then": "^0.6.0",
     "mongoose": "^4.9.6",
     "morgan": "~1.8.1",
     "pug": "~2.0.0-beta11",
