@@ -6,7 +6,7 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const utils = require('./utils/utils');
 const authenticationMiddleware = require('./middleware/authentication');
-const jwt = require('jsonwebtoken');
+const jwt = require('jwt-then');
 
 // import controllers here
 const usersRoute = require('./routes/usersRoute');

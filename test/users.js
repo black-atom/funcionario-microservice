@@ -52,6 +52,7 @@ const userSchemaTestUpdated = {
 }
 
 
+let token;
 
 describe('users', () => {
     beforeEach((done) => { 
@@ -60,11 +61,38 @@ describe('users', () => {
         });
     });
 
+    before((done) => {
+        /**
+         * Estou adicionando um novo usuario porque para gerar o token,
+         * precisamos de um usuario valido
+         */
+        let Users = new user(userSchemaTest);
+        Users.save().then(savedUsed => {
+
+            chai.request(server)
+            .post('/login')
+            .send({
+                username: userSchemaTest.login.username,
+                password: userSchemaTest.login.password
+            })
+            .then(res => {
+                token = res.body.token; 
+                done();
+            }).catch(error => {
+                done(error);
+            })
+
+        }).catch(erro =>{
+            done(erro);
+        })
+    });
+  
+
 describe('/GET users', () => {
         it('it should GET all the users', (done) => {
             chai.request(server)
             .get('/api/users')
-            .set('x-access-token', 'token')
+            .set('x-access-token', token)
             .end((err, res) => {
                 res.should.have.status(200);
                 res.body.should.be.a('array');
@@ -81,7 +109,7 @@ describe('/GET users', () => {
          Users.save((err, oneuser) => {
            chai.request(server)
            .get('/api/users/' + oneuser.id)
-           .set('x-access-token', 'token')
+           .set('x-access-token', token)
            .send(oneuser)
            .end((err, res) => {
                res.should.have.status(200);
@@ -106,7 +134,7 @@ describe('/GET users', () => {
         let Users = new user(userSchemaTest)
           chai.request(server)
           .post('/api/users')
-          .set('x-access-token', 'token')
+          .set('x-access-token', token)
           .send(Users)
           .end((err, res) => {
             res.should.have.status(200);
@@ -132,7 +160,7 @@ describe('/GET users', () => {
           User.save((err, oneuser) => {
             chai.request(server)
             .delete('/api/users/' + oneuser.id)
-            .set('x-access-token', 'token')
+            .set('x-access-token', token)
             .end((err, res) => {
             res.should.have.status(200);
             res.body.should.be.a('object');
@@ -154,7 +182,7 @@ describe('/GET users', () => {
         Users.save((err, oneuser) => {
                 chai.request(server)
                 .put('/api/users/' + oneuser.id)
-                .set('x-access-token', 'token')
+                .set('x-access-token', token)
                 .send(userSchemaTestUpdated)
                 .end((err, res) => {
                     res.should.have.status(200);
