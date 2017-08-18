@@ -17,8 +17,10 @@
     "jsonwebtoken": "^7.4.0",
     "jwt-then": "^0.6.0",
     "mongoose": "^4.9.6",
+    "mongoose-timestamp": "^0.6.0",
     "morgan": "~1.8.1",
     "pug": "~2.0.0-beta11",
+    "ramda": "^0.24.1",
     "serve-favicon": "~2.4.2"
   },
   "devDependencies": {
