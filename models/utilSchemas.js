@@ -1,10 +1,12 @@
 const mongoose = require('mongoose');
-const address  = mongoose.Schema({
-    street: {type: String, required: [true, "You need put your street!"]},
-    number: {type: Number, required: [true, "You need put your number!"]},
-    state: {type: String, required: [true, "You need put your state!"]},
-    city: {type: String, required: [true, "You need put your city!"]},
-    cep: {type: Number, required: [true, "You need put your CEP!"]},
+const enderecoSchema  = new mongoose.Schema({
+    rua: {type: String, required: [true, "Entre com o nome da rua e numero"]},
+    complemento: { type: String, default: "" },
+    bairro: {type: String, required: [true, "Entre com o bairro"]},
+    cidade: {type: String, required: [true, "Entre com a cidade"]},
+    estado: {type: String, required: [true, "Entre com os dados do estado"]},
+    ponto_referencia: { type: String, default: "" },
+    cep: {type: String, required: [true, "Entre com o cep"]}
 })
 
 const contact  = mongoose.Schema({
@@ -13,6 +15,6 @@ const contact  = mongoose.Schema({
 })
 
 module.exports = {
-    address : address,
+     enderecoSchema,
     contact: contact
 }

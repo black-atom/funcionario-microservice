@@ -1,37 +1,45 @@
-const user = require('./../models/user');
+const user = require('./../models/funcionario');
 const jwt = require('jwt-then');
 const config = require('./../utils/config');
 const bcrypt = require('bcrypt-node');
-
+const authConfig = require('../config/authConfig');
 
 exports.authVerification = (req, res, next) => {
     const token = req.get('x-access-token') || req.get('token');
-    jwt.verify(token, config.SECRET).then(tokenVerified => {
-
-        req.decoded = tokenVerified;
+    if(authConfig("test").bypass){
+        req.decoded = "tokenVerified";
         next();
+    }else{
+        jwt.verify(token, config.SECRET).then(tokenVerified => {
 
-    }).catch(error =>{
-        res.status(403).json(error);
-    });
+            req.decoded = tokenVerified;
+            next();
+
+        }).catch(error =>{
+            res.status(403).json(error);
+        });
+    }
 };
 
 exports.signIn = (req, res, next) => {
-    const username = req.body.username;
-    const password = req.body.password;
+    const { username , password } = req.body;
 
-    user.findOne({'login.username': username}).then(connected => {
-        console.log(connected);
-            if(connected){
-                bcrypt.compare(password, connected.login.password, (err, isMatch)=>{
+    user.findOne({'login.username': username}).then(funcionario => {
+        console.log(funcionario);
+            if(funcionario){
+                bcrypt.compare(password, funcionario.login.password, (err, isMatch)=>{
   
                     if(isMatch === true){
                         let login = {
-                            username: connected.login.username,
+                            username: funcionario.login.username,
                         };
                         jwt.sign(login, config.SECRET, {expiresIn: 60*60*12}).then(generatedToken =>{
-                          login.token = generatedToken;
-                          res.status(200).json(login); 
+                         
+                        res.status(200).json({
+                              funcionario,
+                              token
+                          }); 
+
                         })
                       
                     }

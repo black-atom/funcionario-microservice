@@ -12,6 +12,7 @@
     "bluebird": "^3.5.0",
     "body-parser": "~1.17.1",
     "cookie-parser": "~1.4.3",
+    "cors": "^2.8.4",
     "debug": "~2.6.3",
     "express": "~4.15.2",
     "jsonwebtoken": "^7.4.0",
@@ -29,5 +30,9 @@
     "istanbul": "^0.4.5",
     "mocha": "^3.3.0",
     "nodemon": "^1.11.0"
-  }
+  },
+  "main": "index.js",
+  "repository": "git@github.com:black-atom/funcionario-microservice.git",
+  "author": "vitorsilvalima <vitor.lima2@fatec.sp.gov.br>",
+  "license": "MIT"
 }

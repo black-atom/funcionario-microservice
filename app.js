@@ -6,12 +6,14 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const utils = require('./utils/utils');
 const authenticationMiddleware = require('./middleware/authentication');
-const jwt = require('jwt-then');
+const cors = require("cors");
 
 // import controllers here
-const usersRoute = require('./routes/usersRoute');
+const funcionarioRoute = require('./routes/funcionarioRoute');
 const authenticationRoute = require('./routes/authenticationRoute');
 const app = express();
+
+app.use(cors());
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -29,7 +31,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 //import routers here
-app.use('/', usersRoute);
+app.use('/', funcionarioRoute);
 app.use('/', authenticationRoute);
 
 

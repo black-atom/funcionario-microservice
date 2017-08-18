@@ -7,17 +7,26 @@ const timestamps = require('mongoose-timestamp');
 
 
 const UserSchema = new mongoose.Schema({
-        login: {
-        username: {
+        nome: {
             type: String, 
-            required: [true, 'You need put your username']},
-        password:{
-            type: String, 
-            required: [true, 'You need put your password'], 
-            set: (v) => bcrypt.hashSync(v, salt)},  
+            required: [true, "Entre com o nome do usuario"]
         },
-        address: {
-            type: utilSchemas.address, 
+        photo_url: {
+            type: String, 
+            default: ""
+        },
+        login: {
+            username: {
+                type: String, 
+                required: [true, 'You need put your username']},
+            password:{
+                type: String, 
+                required: [true, 'You need put your password'], 
+                set: (v) => bcrypt.hashSync(v, salt)
+            },  
+        },
+        endereco: {
+            type: utilSchemas.enderecoSchema, 
             required: [true, "Entre com o endereco do usuario"]
         },
         cpf: {
@@ -25,30 +34,31 @@ const UserSchema = new mongoose.Schema({
             required: [true, "Entre com o cpf do usuario"]
         },
         rg: {
-            type: string, 
+            type: String, 
             required: [true, "Entre com o rg do usuario"]
         },
         tel1: {
-            type: string, 
+            type: String, 
             required: [true, "Entre com o rg do usuario"]
         },
         tel2: {
-            type: string, 
+            type: String, 
             default: ""
         },
         email: {
-            type: string, 
-            required: [true, "Entre com o email do funcionario"]
+            type: String, 
+            required: [false, "Entre com o email do funcionario"],
+            default: ""
         },
         habilitacao: {
             type: {
                 numero: {
-                    type: string, 
+                    type: String, 
                     default: ""
                 },
                 validade: {
-                    type: string, 
-                    default: ""
+                    type: Date, 
+                    default: null
                 },
             }
         },
