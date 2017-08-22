@@ -33,7 +33,7 @@ exports.signIn = (req, res, next) => {
                         let login = {
                             username: funcionario.login.username,
                         };
-                        jwt.sign(login, config.SECRET, {expiresIn: 60*60*12}).then(generatedToken =>{
+                        jwt.sign(login, config.SECRET, {expiresIn: 60*60*12}).then(token =>{
                          
                         res.status(200).json({
                               funcionario,

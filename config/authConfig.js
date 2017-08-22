@@ -1,5 +1,5 @@
 const R = require('ramda');
-const getConfig = require('./index').getConfig;
+const getConfig = require('./index');
 
 const config = getConfig({
     development: {
