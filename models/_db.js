@@ -1,7 +1,7 @@
 
 const mongoose = require('mongoose');
 const bluebird = require('bluebird');
-const dbConfig = require("../config/databaseConfig")("test");
+const dbConfig = require("../config/databaseConfig");
 
 console.log(dbConfig)
 let options = {
