@@ -37,11 +37,11 @@ const UserSchema = new mongoose.Schema({
             type: String, 
             required: [true, "Entre com o rg do usuario"]
         },
-        tel1: {
+        telefone: {
             type: String, 
-            required: [true, "Entre com o rg do usuario"]
+            required: [true, "Entre com o telefone do usuário"]
         },
-        tel2: {
+        celular: {
             type: String, 
             default: ""
         },
