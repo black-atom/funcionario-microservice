@@ -9,7 +9,7 @@ WORKDIR /usr/src/app
 ENV NODE_ENV="production"
 ENV DB_USERNAME=""
 ENV DB_PASSWORD=""
-ENV DB_URL="mongodb://localhost/test"
+ENV DB_URL="mongodb://172.17.0.1/test"
 
 RUN yarn
 
