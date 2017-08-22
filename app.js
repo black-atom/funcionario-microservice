@@ -7,20 +7,24 @@ const bodyParser = require('body-parser');
 const utils = require('./utils/utils');
 const authenticationMiddleware = require('./middleware/authentication');
 const cors = require("cors");
+const jwt = require('express-jwt');
+const authConfig = require('./config/authConfig')();
 
 // import controllers here
 const funcionarioRoute = require('./routes/funcionarioRoute');
 const authenticationRoute = require('./routes/authenticationRoute');
 const app = express();
 
+if( !authConfig.bypass ){
+	app.use("/api", jwt({secret: authConfig.secret }));
+}
 app.use(cors());
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
-// Middleware 
-app.use('/api', authenticationMiddleware.authVerification);
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));

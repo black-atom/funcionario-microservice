@@ -15,6 +15,7 @@
     "cors": "^2.8.4",
     "debug": "~2.6.3",
     "express": "~4.15.2",
+    "express-jwt": "^5.3.0",
     "jsonwebtoken": "^7.4.0",
     "jwt-then": "^0.6.0",
     "mongoose": "^4.9.6",

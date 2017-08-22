@@ -4,23 +4,6 @@ const config = require('./../utils/config');
 const bcrypt = require('bcrypt-node');
 const authConfig = require('../config/authConfig');
 
-exports.authVerification = (req, res, next) => {
-    const token = req.get('x-access-token') || req.get('token');
-    if(authConfig("test").bypass){
-        req.decoded = "tokenVerified";
-        next();
-    }else{
-        jwt.verify(token, config.SECRET).then(tokenVerified => {
-
-            req.decoded = tokenVerified;
-            next();
-
-        }).catch(error =>{
-            res.status(403).json(error);
-        });
-    }
-};
-
 exports.signIn = (req, res, next) => {
     const { username , password } = req.body;
 
