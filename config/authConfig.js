@@ -2,7 +2,7 @@ const getConfig = require('./index');
 
 const config = getConfig({
     development: {
-        bypass: false,
+        bypass: true,
         secret: "realponto"
     },
 
