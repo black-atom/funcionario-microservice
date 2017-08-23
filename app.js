@@ -15,9 +15,13 @@ const funcionarioRoute = require('./routes/funcionarioRoute');
 const authenticationRoute = require('./routes/authenticationRoute');
 const app = express();
 
-if( !authConfig.bypass ){
-	app.use("/api", jwt({secret: authConfig.secret }));
-}
+// if( !authConfig.bypass ){
+	app.use("/api", jwt({secret: authConfig.secret }), (err, req, res, next) => {
+		if (err.name === 'UnauthorizedError') { 
+			return(res.status(401).send('Invalid authorization token'));
+		}
+	});
+// }
 app.use(cors());
 
 
