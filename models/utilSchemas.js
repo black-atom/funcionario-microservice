@@ -1,20 +1,25 @@
 const mongoose = require('mongoose');
+
 const enderecoSchema  = new mongoose.Schema({
-    rua: {type: String, required: [true, "Entre com o nome da rua e numero"]},
-    complemento: { type: String, default: "" },
-    bairro: {type: String, required: [true, "Entre com o bairro"]},
-    cidade: {type: String, required: [true, "Entre com a cidade"]},
-    uf: {type: String, required: [true, "Entre com os dados do estado"]},
-    ponto_referencia: { type: String, default: "" },
-    cep: {type: String, required: [true, "Entre com o cep"]}
+    rua: {type: String, required: [true, 'É necessário informar a rua']},
+    complemento: { type: String, default: '' },
+    bairro: {type: String, required: [true, 'É necessário informar o bairro']},
+    cidade: {type: String, required: [true, 'É necessário informar a cidade']},
+    uf: {type: String, required: [true, 'É necessário informar o estado']},
+    ponto_referencia: { type: String, default: '' },
+    cep: {type: String, required: [true, 'É necessário informar o CEP']}
 })
 
-const contact  = mongoose.Schema({
-    email: {type: String, required: [true, "You need put your email adress!"]},
-    tel: {type: Number, required: [true, "You need put your telephone number!"]},
+const contatoSchema  = new mongoose.Schema({
+    email: {type: String, required: [true, 'É necessário informar o e-mail!']},
+    tel: {type: String, required: [true, 'É necessário informar o telefone!']},
+    celular: {type: String, required: false, default: ''},
+    email: {type: String, required: false, default: ''},
+
+
 })
 
 module.exports = {
      enderecoSchema,
-    contact: contact
+     contatoSchema
 }

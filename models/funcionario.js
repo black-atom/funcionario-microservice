@@ -9,46 +9,44 @@ const timestamps = require('mongoose-timestamp');
 const UserSchema = new mongoose.Schema({
         nome: {
             type: String, 
-            required: [true, "Entre com o nome do usuario"]
+            required: [true, "É necessário informar o nome"]
         },
-        photo_url: {
+        foto_url: {
             type: String, 
             default: ""
         },
         login: {
             username: {
                 type: String, 
-                required: [true, 'You need put your username']},
+                required: [true, 'É necessário informar o usuário']},
             password:{
                 type: String, 
-                required: [true, 'You need put your password'], 
+                required: [true, 'É necessário informar a senha'], 
                 set: (v) => bcrypt.hashSync(v, salt)
-            },  
+            }, 
+            tipo: {
+                type: [{
+                    type: String, 
+                    enum: ['Adminstrador', 'Técnica', 'Técnico', 'Suporte'],
+                }],
+                default: 'tecnico'
+            } 
         },
         endereco: {
             type: utilSchemas.enderecoSchema, 
-            required: [true, "Entre com o endereco do usuario"]
+            required: [true, 'É necessário informar o endereço']
+        },
+        contato: {
+            type: utilSchemas.contatoSchema,
+            required: [true, 'É necessário informar o contato']
         },
         cpf: {
             type: String, 
-            required: [true, "Entre com o cpf do usuario"]
+            required: [true, 'É necessário informar o CPF']
         },
         rg: {
             type: String, 
-            required: [true, "Entre com o rg do usuario"]
-        },
-        telefone: {
-            type: String, 
-            required: [true, "Entre com o telefone do usuário"]
-        },
-        celular: {
-            type: String, 
-            default: ""
-        },
-        email: {
-            type: String, 
-            required: [false, "Entre com o email do funcionario"],
-            default: ""
+            required: [true, 'É necessário informar o RG']
         },
         habilitacao: {
             type: {
@@ -62,13 +60,7 @@ const UserSchema = new mongoose.Schema({
                 },
             }
         },
-        tipo: {
-            type: [{
-                type: String, 
-                enum: ['tecnico', 'tecnica', 'administrador'],
-            }],
-            default: 'tecnico'
-        }
+       
     },
     {
         versionKey: false
