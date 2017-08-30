@@ -13,10 +13,10 @@ exports.signIn = (req, res, next) => {
                 bcrypt.compare(password, funcionario.login.password, (err, isMatch)=>{
   
                     if(isMatch === true){
-                        let login = {
-                            username: funcionario.login.username,
-                        };
-                        jwt.sign(login, config.SECRET, {expiresIn: 60*60*12}).then(token =>{
+                        // let login = {
+                        //     username: funcionario.login.username,
+                        // };
+                        jwt.sign(funcionario, config.SECRET, {expiresIn: 60*60*12}).then(token =>{
                          
                         res.status(200).json({
                               funcionario,

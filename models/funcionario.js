@@ -4,7 +4,7 @@ const utilSchemas = require('./utilSchemas')
 const bcrypt = require('bcrypt-node');
 const salt = bcrypt.genSaltSync(10);
 const timestamps = require('mongoose-timestamp');
-
+const userAudit = require('mongoose-useraudit-plugin');
 
 const UserSchema = new mongoose.Schema({
         nome: {
@@ -68,5 +68,6 @@ const UserSchema = new mongoose.Schema({
 
 
 UserSchema.plugin(timestamps);
+UserSchema.plugin(userAudit);
 
 module.exports = _db.model('funcionarios', UserSchema);
