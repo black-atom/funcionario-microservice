@@ -64,6 +64,13 @@ app.use((req, res, next) => {
 });
 
 // error handlers
+app.use((err, req, res, next) => {
+	if(err.name === 'MongoError'){
+		res.status = 500;
+	}
+	next();
+})
+
 
 // development error handler
 // will print stacktrace
