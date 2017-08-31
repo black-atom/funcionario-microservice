@@ -19,7 +19,7 @@ app.use(cors());
 app.use("/api", 
   jwt({
     secret: authConfig.secret,
-    credentialsRequired: authConfig.bypass
+    credentialsRequired: !authConfig.bypass
   }), 
   (err, req, res, next) => {
     if (err.name === 'UnauthorizedError') { 
