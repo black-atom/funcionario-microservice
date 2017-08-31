@@ -11,6 +11,18 @@ const UserSchema = new mongoose.Schema({
             type: String, 
             required: [true, "É necessário informar o nome"]
         },
+        cpf: {
+            type: String, 
+            required: [true, 'É necessário informar o CPF']
+        },
+        rg: {
+            type: String, 
+            required: [true, 'É necessário informar o RG']
+        },
+        data_nasc: {
+            type: String, 
+            required: [true, "É necessário informar o nome"]
+        },
         foto_url: {
             type: String, 
             default: ""
@@ -23,7 +35,7 @@ const UserSchema = new mongoose.Schema({
                 type: String, 
                 required: [true, 'É necessário informar a senha'], 
                 set: (v) => bcrypt.hashSync(v, salt)
-            }, 
+            },            
             tipo: {
                 type: [{
                     type: String, 
@@ -39,14 +51,6 @@ const UserSchema = new mongoose.Schema({
         contato: {
             type: utilSchemas.contatoSchema,
             required: [true, 'É necessário informar o contato']
-        },
-        cpf: {
-            type: String, 
-            required: [true, 'É necessário informar o CPF']
-        },
-        rg: {
-            type: String, 
-            required: [true, 'É necessário informar o RG']
         },
         habilitacao: {
             type: {
