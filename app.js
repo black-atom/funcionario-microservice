@@ -15,6 +15,7 @@ const funcionarioRoute = require('./routes/funcionarioRoute');
 const authenticationRoute = require('./routes/authenticationRoute');
 const app = express();
 
+app.use(cors());
 app.use("/api", 
   jwt({
     secret: authConfig.secret,
@@ -27,15 +28,16 @@ app.use("/api",
   }
 );
 
-app.use("/api", (req, res, next) => {
-  if(req.body){
-    req.body.createdBy = req.user || 'Ambiente de Test';
-    req.body.updatedBy = req.user || 'Ambiente de Test';
-  }
-  next();
-})
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 
-app.use(cors());
+app.use("/api", (req, res, next) => {
+
+  req.body.createdBy = req.user || 'Ambiente de Test';
+  req.body.updatedBy = req.user || 'Ambiente de Test';
+  
+   next();
+})
 
 
 // view engine setup
@@ -46,8 +48,6 @@ app.set('view engine', 'pug');
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
