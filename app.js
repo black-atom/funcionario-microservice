@@ -33,12 +33,11 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use("/api", (req, res, next) => {
 
-  req.body.createdBy = req.user || 'Ambiente de Test';
-  req.body.updatedBy = req.user || 'Ambiente de Test';
+  req.body.createdBy = (req.user && req.user._doc.login.username) ? req.user._doc.login.username : 'Ambiente de Test';
+  req.body.updatedBy = (req.user && req.user._doc.login.username) ? req.user._doc.login.username : 'Ambiente de Test';
   
    next();
 })
-
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -66,34 +65,37 @@ app.use((req, res, next) => {
 // error handlers
 app.use((err, req, res, next) => {
 	if(err.name === 'MongoError'){
-		res.status = 500;
+		err.status = 500;
 	}
-	next();
+	next(err);
 })
 
 
 // development error handler
 // will print stacktrace
-if (app.get('env') === 'development') {
-	app.use((err, req, res, next) => {
-		res.status(err.status || 500);
-		res.send('error', {
-			message: err.message,
-			error: err
-		});
-	});
-}
+// if (app.get('env') === 'development') {
+// 	app.use((err, req, res, next) => {
+// 		res.status(err.status || 500);
+// 		res.send('error', {
+// 			message: err.message,
+// 			error: err
+// 		});
+// 	});
+// }
 
 // production error handler
 // no stacktraces leaked to user
-app.use((err, req, res, next) => {
-	res.status(err.status || 500);
-	res.send('error', {
-		message: err.message,
-		error: {}
-	});
-});
+// error handler
+app.use(function(err, req, res, next) {
+  // set locals, only providing error in development
+  res.locals.message = err.message;
+  res.locals.error = req.app.get('env') === 'development' ? err : err;
 
+  console.error(err.stack || err)
+  // render the error page
+  res.status(err.status || 500);
+  res.json(res.locals.error);
+});
 
 //listen to events
 process.once('SIGUSR2', () => {
