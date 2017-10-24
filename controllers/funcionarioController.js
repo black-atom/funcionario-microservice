@@ -59,7 +59,11 @@ const updateFuncionario = (req, res, next) => {
     const id = prop("id", req.params);
     const funcionario = prop("body", req);
 
-    Funcionarios.findByIdAndUpdate(id, funcionario)
+    Funcionarios.findById(id)
+    .then(foundFunc => {
+        return foundFunc.save(funcionario)
+    })
+    //Funcionarios.findByIdAndUpdate(id, funcionario, {safe: false, new: true})
     .then(savedUser => {
         res.status(200).json(savedUser);
     })
