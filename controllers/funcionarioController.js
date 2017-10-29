@@ -2,7 +2,7 @@ const Funcionarios = require ('./../models/funcionario.js');
 const bcrypt = require('bcrypt-node');
 const salt = bcrypt.genSaltSync(10);
 const { prop } = require("ramda");
-
+const mergeDeep = require("../helpers/mergeDeep")
 
 const getAllFuncionarios = (req, res, next) => {
     console.log(req.decoded);
@@ -57,9 +57,13 @@ const deleteFuncionario = (req, res, next) => {
 const updateFuncionario = (req, res, next) => {
 
     const id = prop("id", req.params);
-    const funcionario = prop("body", req);
+    const funcionario = req.body;
 
-    Funcionarios.findByIdAndUpdate(id, funcionario)
+    Funcionarios.findById(id)
+    .then(foundFunc => {
+        mergeDeep(foundFunc, funcionario)
+        return foundFunc.save()
+    })
     .then(savedUser => {
         res.status(200).json(savedUser);
     })
@@ -67,7 +71,6 @@ const updateFuncionario = (req, res, next) => {
         next(erro);
     });
 };
-
 
 module.exports = {
     getAllFuncionarios,

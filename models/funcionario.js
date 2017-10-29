@@ -7,69 +7,68 @@ const timestamps = require('mongoose-timestamp');
 const userAudit = require('mongoose-useraudit-plugin');
 
 const UserSchema = new mongoose.Schema({
-        nome: {
-            type: String, 
-            required: [true, "É necessário informar o nome"]
-        },
-        cpf: {
-            type: String, 
-            required: [true, 'É necessário informar o CPF']
-        },
-        rg: {
-            type: String, 
-            required: [true, 'É necessário informar o RG']
-        },
-        data_nasc: {
-            type: String, 
-            required: [true, "É necessário informar o nome"]
-        },
-        foto_url: {
-            type: String, 
-            default: ""
-        },
-        login: {
-            username: {
-                type: String, 
-                required: [true, 'É necessário informar o usuário']},
-            password:{
-                type: String, 
-                required: [true, 'É necessário informar a senha'], 
-                set: (v) => bcrypt.hashSync(v, salt)
-            },            
-            tipo: {
-                type: [{
-                    type: String, 
-                    enum: ['administrador', 'tecnica', 'tecnico', 'suporte'],
-                }],
-                default: 'tecnico'
-            } 
-        },
-        endereco: {
-            type: utilSchemas.enderecoSchema, 
-            required: [true, 'É necessário informar o endereço']
-        },
-        contato: {
-            type: utilSchemas.contatoSchema,
-            required: [true, 'É necessário informar o contato']
-        },
-        habilitacao: {
-            type: {
-                numero: {
-                    type: String, 
-                    default: ""
-                },
-                validade: {
-                    type: Date, 
-                    default: null
-                },
-            }
-        },
-       
+    nome: {
+        type: String,
+        required: [true, "É necessário informar o nome"]
     },
-    {
-        versionKey: false
-    });
-
+    cpf: {
+        type: String,
+        required: [true, 'É necessário informar o CPF']
+    },
+    rg: {
+        type: String,
+        required: [true, 'É necessário informar o RG']
+    },
+    data_nasc: {
+        type: String,
+        required: [true, "É necessário informar o nome"]
+    },
+    foto_url: {
+        type: String,
+        default: ""
+    },
+    login: {
+        username: {
+            type: String,
+            required: [true, 'É necessário informar o usuário']
+        },
+        password: {
+            type: String,
+            required: [true, 'É necessário informar a senha'],
+            set: (v) => bcrypt.hashSync(v, salt)
+        },
+        tipo: {
+            type: [{
+                type: String,
+                enum: ['administrador', 'tecnica', 'tecnico', 'suporte'],
+            }],
+            default: 'tecnico'
+        }
+    },
+    endereco: {
+        type: utilSchemas.enderecoSchema,
+        required: [true, 'É necessário informar o endereço']
+    },
+    contato: {
+        type: utilSchemas.contatoSchema,
+        required: [true, 'É necessário informar o contato']
+    },
+    habilitacao: {
+        type: {
+            numero: {
+                type: String,
+                default: ""
+            },
+            validade: {
+                type: Date,
+                default: null
+            },
+        }
+    },
+},
+{
+    versionKey: false
+});
 
 UserSchema.plugin(timestamps);
 UserSchema.plugin(userAudit);
