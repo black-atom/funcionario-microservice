@@ -65,42 +65,10 @@ const UserSchema = new mongoose.Schema({
             },
         }
     },
-
 },
-    {
-        versionKey: false
-    });
-
-UserSchema.pre('save', function(next) {
-    let user = this;
-    console.log(this.login.password)
-    console.log(user.isModified('login.password'))
-    if (!user.isModified('login.password')) return next();
-
-    try {
-        console.log(user)
-        user.login.password = bcrypt.hashSync(user.login.password, salt)
-    }
-    catch (err) {
-        next(err)
-    } 
+{
+    versionKey: false
 });
-
-/*UserSchema.pre('update', function(next) {
-    let user = this;
-    console.log(user.isModified('login.password'))
-    if (!user.isModified('login.password')) return next();
-
-    try {
-        console.log(user)
-        user.login.password = bcrypt.hashSync(user.login.password, salt)
-    }
-    catch (err) {
-        next(err)
-    } 
-
-});*/
-
 
 UserSchema.plugin(timestamps);
 UserSchema.plugin(userAudit);
