@@ -6,9 +6,8 @@ const mergeDeep = require('../helpers/mergeDeep');
 const formatFuncionario = require('../utils/funcionarioSpec');
 
 const getAllFuncionarios = (req, res, next) => {
-    console.log(req.decoded);
-    Funcionarios.find({}, {_id: 1, nome: 1, cpf: 1, rg: 1, "login.tipo": 1 }).then(foundUsers => {
-        
+
+    Funcionarios.find({}, {_id: 1, nome: 1, cpf: 1, rg: 1, "login.tipo": 1, foto_url: 1 }).then(foundUsers => {
         res.status(200)
         .json(foundUsers);
 
