@@ -65,6 +65,11 @@ const UserSchema = new mongoose.Schema({
             },
         }
     },
+    ativo: {
+        type: Boolean,
+        default: true
+    },
+    
 },
 {
     versionKey: false
