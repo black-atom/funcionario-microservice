@@ -6,47 +6,30 @@ const mergeDeep = require('../helpers/mergeDeep');
 const formatFuncionario = require('../utils/funcionarioSpec');
 const Promise =  require('bluebird');
 
-const getAllFuncionarios = (req, res, next) => {
+const getAllFuncionarios = async(req, res, next) => {
 
   const limit = parseInt(req.query.limit);
-  const skip = parseInt(req.query.skip);
+  const skip = parseInt(req.query.skip); 
 
-    let search = JSON.parse(req.query.search);
-    for(key in search){
-      let valor = search[key];
-      if(key !== "createdBy"){
-        valor = new RegExp(''+ valor +'', "i")
-      }
-      search = {
-        ...search,
-        [key]: valor
-      }
+  let query = { ...req.query };
+  delete query.skip;
+  delete query.limit;
+
+  for(key in query){
+      query = {
+      ...query,
+      [key]: new RegExp(''+ query[key] +'', "i")
     }
+  }
   
-    if (skip && limit) {
-      Promise.all([
-        Funcionarios.find(search,{_id: 1, nome: 1, cpf: 1, rg: 1, "login.tipo": 1, foto_url: 1 }).sort( { nome: 1 } )
-          .skip(skip)
-          .limit(limit)
-          .exec(),
-        Funcionarios.find(search).count().exec()
-      ])
-        .spread((funcionarios, count) => {
-          res.json(200, { funcionarios, count });
-        })
-        .catch(error => next(error));
-    } else {
-      Promise.all([
-        Funcionarios.find(search,{_id: 1, nome: 1, cpf: 1, rg: 1, "login.tipo": 1, foto_url: 1 }).sort( { createdBy: -1 } )
-          .limit(limit)
-          .exec(),
-        Funcionarios.find(search).count().exec()
-      ])
-        .spread((funcionarios, count) => {
-          res.json(200, { funcionarios, count });
-        })
-        .catch(error => next(error));
-    }
+  try {
+      const funcionarios = await Funcionarios.find(query, {_id: 1, nome: 1, cpf: 1, rg: 1, "login.tipo": 1, foto_url: 1 }).skip(skip).limit(limit).sort( { nome: 1 });
+      const count = await Funcionarios.find(query).count();
+      res.send({ funcionarios, count });
+  } catch (error) {
+        next(error)
+  }
+
 }
 
 const getOneFuncionario = (req, res, next) => {
