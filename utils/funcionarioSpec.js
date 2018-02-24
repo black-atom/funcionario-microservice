@@ -14,8 +14,10 @@ const funcionarioSpec = {
   data_nasc: prop('data_nasc'),
   foto_url: prop('foto_url'),
   login: prop('login'),
-  createdBy: prop('createdAt'),
-  updatedBy: prop('updatedAt')
+  createdBy: prop('createdBy'),
+  updatedBy: prop('updatedBy'),
+  createdAt: prop('createdAt'),
+  updatedAt: prop('updatedAt'),
 };
 const contatoSpec = {
   nome: prop('nome'),
