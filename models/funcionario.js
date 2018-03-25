@@ -5,6 +5,7 @@ const bcrypt = require('bcrypt-node');
 const salt = bcrypt.genSaltSync(10);
 const timestamps = require('mongoose-timestamp');
 const userAudit = require('mongoose-useraudit-plugin');
+const uuidv4 = require('uuid/v4')
 
 const UserSchema = new mongoose.Schema({
     nome: {
@@ -43,6 +44,11 @@ const UserSchema = new mongoose.Schema({
                 enum: ['administrador', 'tecnica', 'tecnico', 'suporte'],
             }],
             default: 'tecnico'
+        },
+        api_key: {
+          type: String,
+          required: [true, 'Informe a api-key'],
+          set: () => uuidv4()
         }
     },
     endereco: {
