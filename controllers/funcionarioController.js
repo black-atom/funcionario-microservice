@@ -47,7 +47,11 @@ const registerFuncionario = (req, res, next) => {
     
     const funcionario = formatFuncionario(req.body);
     
-    const newFuncionario = new Funcionarios(funcionario);
+    const newFuncionario = new Funcionarios({
+      ...funcionario,
+      login: {
+        ...funcionario.login, api_key: ''
+      }});
     
     newFuncionario.save().then(createdUser => {
         res.status(200)

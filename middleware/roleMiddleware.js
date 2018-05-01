@@ -1,4 +1,4 @@
-const authConfig = require('../config/authConfig');
+const authConfig = require('../config/authConfig')();
 
 const roleMiddlware = (roles = ["administrador"]) => (req, res, next) => {
   const forbidden = () => {
@@ -9,7 +9,6 @@ const roleMiddlware = (roles = ["administrador"]) => (req, res, next) => {
 
   if (req.login && !authConfig.bypass) {
     const { tipo } = req.login;
-    console.log("tipo =====>", tipo);
 
     if (tipo && Array.isArray(tipo)) {
       const temRole =

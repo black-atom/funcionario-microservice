@@ -2,9 +2,12 @@ const user = require('./../models/funcionario');
 const jwt = require('jwt-then');
 const config = require('./../utils/config');
 const bcrypt = require('bcrypt-node');
-const authConfig = require('../config/authConfig');
+const authConfig = require('../config/authConfig')();
+const jwtExpress = require('express-jwt');
 
-exports.signIn = (req, res, next) => {
+
+
+exports.login = (req, res, next) => {
     const { username , password } = req.body;
 
     user.findOne({'login.username': username}).then(funcionario => {
@@ -36,3 +39,34 @@ exports.signIn = (req, res, next) => {
             next(error);
     });
 };
+
+const jwtStrategy = jwtExpress({
+  secret: authConfig.secret,
+})
+
+const apiKeyStrategy = (req, res, next) => {
+  const api_key = req.header('apikey');
+
+  user.findOne({'login.api_key': api_key}).then(funcionario => {
+    if(funcionario){
+      req.user = funcionario;
+      next()
+    } else {
+      const error =  new Error('user not found');
+      error.name = 'UnauthorizedError';
+      next(error)
+    }
+  })
+  .catch(() => {
+    const error = new Error('Error processing api_key');
+    error.name = 'UnauthorizedError';
+    next(error);
+  })
+}
+
+exports.validate = (req, res, next) => {
+  const loginStrategy = (req.headers && req.headers.authorization) ?
+    jwtStrategy : apiKeyStrategy;
+
+  loginStrategy(req, res, next);
+}
