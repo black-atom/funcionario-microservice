@@ -23,7 +23,7 @@ const getAllFuncionarios = async(req, res, next) => {
   }
   
   try {
-      const funcionarios = await Funcionarios.find(query, {_id: 1, nome: 1, cpf: 1, rg: 1, "login.username": 1, "login.tipo": 1, foto_url: 1 }).skip(skip).limit(limit).sort( { nome: 1 });
+      const funcionarios = await Funcionarios.find(query, {_id: 1, nome: 1, cpf: 1, rg: 1, "login.username": 1, "login.tipo": 1, foto_url: 1, ativo: 1 }).skip(skip).limit(limit).sort( { nome: 1 });
       const count = await Funcionarios.find(query).count();
       res.send({ funcionarios, count });
   } catch (error) {
@@ -78,7 +78,6 @@ const updateFuncionario = (req, res, next) => {
 
     const id = prop("id", req.params);
     const funcionario = formatFuncionario(req.body);
-
     Funcionarios.findById(id)
     .then(foundFunc => {
         mergeDeep(foundFunc, funcionario)
