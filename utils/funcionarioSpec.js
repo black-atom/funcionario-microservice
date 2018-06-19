@@ -18,6 +18,7 @@ const funcionarioSpec = {
   updatedBy: prop('updatedBy'),
   createdAt: prop('createdAt'),
   updatedAt: prop('updatedAt'),
+  ativo: prop('ativo'),
 };
 const contatoSpec = {
   nome: prop('nome'),
