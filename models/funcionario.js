@@ -41,7 +41,7 @@ const UserSchema = new mongoose.Schema({
         tipo: {
             type: [{
                 type: String,
-                enum: ['administrador', 'tecnica', 'tecnico', 'suporte'],
+                enum: ['administrador', 'contrato', 'tecnica', 'tecnico', 'suporte'],
             }],
             default: 'tecnico'
         },

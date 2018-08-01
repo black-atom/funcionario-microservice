@@ -46,7 +46,7 @@ const contatoSchema  = new mongoose.Schema({
     },
     telefone: {
         type: String, 
-        required: [true, 'É necessário informar o telefone!']
+        required: [false, 'É necessário informar o telefone!']
     },
     celular: {
         type: String, 
